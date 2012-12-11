@@ -1,18 +1,14 @@
 %define tarname WebTest
-%define name	python-webtest
-%define version	1.2.3
-%define release %mkrel 1
 
 Summary:	Helper to test WSGI applications
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		python-webtest
+Version:	1.2.3
+Release:	2
 Source0:	http://pypi.python.org/packages/source/W/%{tarname}/%{tarname}-%{version}.tar.gz
 Source1:	Makefile
 License:	MIT
 Group:		Development/Python
 Url:		http://pythonpaste.org/webtest/
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildArch:	noarch
 Requires:	python-webob
 BuildRequires:	python-setuptools
@@ -32,17 +28,22 @@ WebTest is based on paste.fixture.TestApp.
 cp -f %SOURCE1 docs/
 
 %install
-%__rm -rf %{buildroot}
 PYTHONDONTWRITEBYTECODE= %__python setup.py install --root=%{buildroot} --record=FILE_LIST
+sed -i 's/.*egg-info$//' FILE_LIST
 pushd docs
 export PYTHONPATH=`dir -d ../build/lib*`
 make html
 rm -f _build/html/.buildinfo
 popd docs
 
-%clean
-%__rm -rf %{buildroot}
 
 %files -f FILE_LIST
-%defattr(-,root,root)
 %doc docs/_build/html
+
+
+%changelog
+* Thu Mar 31 2011 Lev Givon <lev@mandriva.org> 1.2.3-1mdv2011.0
++ Revision: 649457
+- import python-webtest
+
+
