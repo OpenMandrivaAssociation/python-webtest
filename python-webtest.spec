@@ -3,7 +3,7 @@
 Summary:	Helper to test WSGI applications
 Name:		python-webtest
 Version:	1.2.3
-Release:	2
+Release:	3
 Source0:	http://pypi.python.org/packages/source/W/%{tarname}/%{tarname}-%{version}.tar.gz
 Source1:	Makefile
 License:	MIT
