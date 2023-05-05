@@ -1,49 +1,40 @@
-%define tarname WebTest
+Summary:        Helper to test WSGI applications
+Name:           python-webtest
+Version:        3.0.0
+Release:        1
+License:        MIT
+Group:          Development/Python
+URL:            https://github.com/Pylons/webtest
+Source0:		https://pypi.io/packages/source/W/WebTest/WebTest-%{version}.tar.gz
+BuildRequires:  pkgconfig(python)
+BuildRequires:  python%{pyver}dist(pip)
+BuildRequires:  python%{pyver}dist(setuptools)
+BuildRequires:  python%{pyver}dist(wheel)
 
-Summary:	Helper to test WSGI applications
-Name:		python-webtest
-Version:	1.2.3
-Release:	3
-Source0:	http://pypi.python.org/packages/source/W/%{tarname}/%{tarname}-%{version}.tar.gz
-Source1:	Makefile
-License:	MIT
-Group:		Development/Python
-Url:		http://pythonpaste.org/webtest/
-BuildArch:	noarch
-Requires:	python-webob
-BuildRequires:	python-setuptools
-BuildRequires:	python-sphinx
+BuildArch:      noarch
 
 %description
-This package wraps any WSGI application and makes it easy to send test
+WebTest wraps any WSGI application and makes it easy to send test
 requests to that application, without starting up an HTTP server.
 
-It provides convenient full-stack testing of applications written with
-any WSGI-compatible framework.
+This provides convenient full-stack testing of applications written
+with any WSGI-compatible framework.
 
-WebTest is based on paste.fixture.TestApp.
+%files
+%doc docs/* README.rst CHANGELOG.rst
+%{py_puresitedir}/webtest
+%{py_puresitedir}/WebTest-*.*-info
 
+#--------------------------------------------------------------------
 %prep
-%setup -q -n %{tarname}-%{version}
-cp -f %SOURCE1 docs/
+%autosetup -p1 -n WebTest-%{version}
+
+# removw unwanted docs
+rm -f docs/{Makefile,conf.py,changelog.rst}
+
+%build
+%py_build
 
 %install
-PYTHONDONTWRITEBYTECODE= %__python setup.py install --root=%{buildroot} --record=FILE_LIST
-sed -i 's/.*egg-info$//' FILE_LIST
-pushd docs
-export PYTHONPATH=`dir -d ../build/lib*`
-make html
-rm -f _build/html/.buildinfo
-popd docs
-
-
-%files -f FILE_LIST
-%doc docs/_build/html
-
-
-%changelog
-* Thu Mar 31 2011 Lev Givon <lev@mandriva.org> 1.2.3-1mdv2011.0
-+ Revision: 649457
-- import python-webtest
-
+%py_install
 
